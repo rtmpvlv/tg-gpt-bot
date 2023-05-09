@@ -3,6 +3,7 @@ import { DefaultEntity } from "./entities/DefaultEntity.js";
 import { FortuneTellerEntity } from "./entities/FortuneTellerEntity.js";
 
 export const LOADING_MESSAGE = "Загружаю ответ...";
+export const VOICE_MESSAGE_ERROR = "Пожалуйста, отправьте текстовое сообщение.";
 export const INITIAL_SESSION = { messages: [] };
 export const INITIAL_MESSAGE = "Если хотите начать или продолжить - введите дату рождения.";
 

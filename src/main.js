@@ -7,6 +7,7 @@ import {
   INITIAL_SESSION,
   initCommand,
   LOADING_MESSAGE,
+  VOICE_MESSAGE_ERROR,
 } from "./utils.js";
 
 const bot = new Telegraf(config.get("TELEGRAM_TOKEN"));
@@ -16,6 +17,10 @@ bot.use(session());
 bot.command("new", initCommand);
 
 bot.command("start", initCommand);
+
+bot.on(message("voice"), async (ctx) => {
+  ctx.reply(VOICE_MESSAGE_ERROR);
+});
 
 bot.on(message("text"), async (ctx) => {
   ctx.session ??= INITIAL_SESSION;
