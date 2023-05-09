@@ -5,7 +5,10 @@ import { FortuneTellerEntity } from "./entities/FortuneTellerEntity.js";
 export const LOADING_MESSAGE = "Загружаю ответ...";
 export const VOICE_MESSAGE_ERROR = "Пожалуйста, отправьте текстовое сообщение.";
 export const INITIAL_SESSION = { messages: [] };
-export const INITIAL_MESSAGE = "Если хотите начать или продолжить - введите дату рождения.";
+export const INITIAL_MESSAGES = {
+  6101735471: "Введите дату рождения.",
+  6010220399: "Введите имя и фамилию человека."
+};
 
 export const BOTS = {
   default: new DefaultEntity(),
@@ -21,6 +24,8 @@ export async function removeFile(path) {
 }
 
 export async function initCommand(ctx) {
+  const botId = ctx?.botInfo?.id?.toString();
+
   ctx.session = INITIAL_SESSION;
-  await ctx.reply(INITIAL_MESSAGE);
+  await ctx.reply(INITIAL_MESSAGES[botId]);
 }

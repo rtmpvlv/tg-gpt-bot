@@ -1,42 +1,51 @@
+import dotenv from "dotenv";
 import { Telegraf, session } from "telegraf";
 import { message } from "telegraf/filters";
-import config from "config";
 import { DefaultEntity } from "./entities/DefaultEntity.js";
 import {
   BOTS,
   INITIAL_SESSION,
-  initCommand,
   LOADING_MESSAGE,
   VOICE_MESSAGE_ERROR,
+  initCommand,
 } from "./utils.js";
 
-const bot = new Telegraf(config.get("TELEGRAM_TOKEN"));
+dotenv.config();
 
-bot.use(session());
+const fortuneTellerToken = process.env.FORTUNE_TELLER_TOKEN;
+const biographyToken = process.env.BIOGRAPHY_TOKEN;
 
-bot.command("new", initCommand);
+const defaultEntity = new DefaultEntity();
 
-bot.command("start", initCommand);
+const botSettings = [
+  { token: fortuneTellerToken }, 
+  { token: biographyToken }
+];
 
-bot.on(message("voice"), async (ctx) => {
-  ctx.reply(VOICE_MESSAGE_ERROR);
-});
+function createBot({ token }) {
+  const bot = new Telegraf(token);
+  bot.use(session());
+  bot.command("new", initCommand);
+  bot.command("start", initCommand);
+  bot.on(message("voice"), async (ctx) => {
+    await ctx.reply(VOICE_MESSAGE_ERROR);
+  });
+  bot.on(message("text"), async (ctx) => {
+    ctx.session ??= INITIAL_SESSION;
+    const botId = ctx?.botInfo?.id?.toString();
 
-bot.on(message("text"), async (ctx) => {
-  ctx.session ??= INITIAL_SESSION;
-  const botId = ctx?.botInfo?.id?.toString();
+    const entity = BOTS[botId] || defaultEntity;
 
-  const entity = BOTS[botId] || new DefaultEntity();
+    try {
+      await ctx.reply(LOADING_MESSAGE);
+      await entity.processTextToChat(ctx, ctx.message.text);
+    } catch (e) {
+      console.log(`Error while text message`, e.message);
+    }
+  });
+  bot.launch();
+  process.once("SIGINT", () => bot.stop("SIGINT"));
+  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+}
 
-  try {
-    await ctx.reply(LOADING_MESSAGE);
-    await entity.processTextToChat(ctx, ctx.message.text);
-  } catch (e) {
-    console.log(`Error while text message`, e.message);
-  }
-});
-
-bot.launch();
-
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+Promise.all(botSettings.map(createBot));

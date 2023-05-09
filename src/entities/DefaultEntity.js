@@ -24,7 +24,7 @@ export class DefaultEntity {
       await ctx.reply(response.content);
     } catch (e) {
       console.log("Error while proccesing text to gpt", e.message);
-      ctx.reply(LOADING_ERROR_MESSAGE);
+      await ctx.reply(LOADING_ERROR_MESSAGE);
     }
   }
 }
