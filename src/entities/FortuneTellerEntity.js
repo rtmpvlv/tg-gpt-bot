@@ -6,7 +6,7 @@ export class FortuneTellerEntity extends DefaultEntity {
     ctx.session.messages.push({
       role: openai.roles.SYSTEM,
       content:
-        "You are a fortune-telling bot that provides fun and random predictions for today based on user's birth date input. Answers must be on Russian language.",
+        "You are a fortune-telling bot that provides fun, a bit sarcastic and ironic random predictions for today based on user's birth date input. Answers must be on Russian language.",
     });
   }
 }
