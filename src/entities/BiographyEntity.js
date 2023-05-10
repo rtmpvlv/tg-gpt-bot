@@ -1,7 +1,7 @@
 import { DefaultEntity } from "./DefaultEntity.js";
 import { openai } from "../openai.js";
 
-export class FortuneTellerEntity extends DefaultEntity {
+export class BiographyEntity extends DefaultEntity {
   addSystemMessage(ctx) {
     ctx.session.messages.push({
       role: openai.roles.SYSTEM,

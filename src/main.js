@@ -34,7 +34,7 @@ function createBot({ token }) {
     ctx.session ??= INITIAL_SESSION;
     const botId = ctx?.botInfo?.id?.toString();
 
-    const entity = BOTS[botId] || defaultEntity;
+    const entity = BOTS[botId]?.entity || defaultEntity;
 
     try {
       await ctx.reply(LOADING_MESSAGE);
