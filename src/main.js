@@ -14,12 +14,14 @@ dotenv.config();
 
 const fortuneTellerToken = process.env.FORTUNE_TELLER_TOKEN;
 const biographyToken = process.env.BIOGRAPHY_TOKEN;
+const trainEnglishToken = process.env.TRAIN_ENGLISH_TOKEN;
 
 const defaultEntity = new DefaultEntity();
 
 const botSettings = [
   { token: fortuneTellerToken }, 
-  { token: biographyToken }
+  { token: biographyToken },
+  { token: trainEnglishToken },
 ];
 
 function createBot({ token }) {
