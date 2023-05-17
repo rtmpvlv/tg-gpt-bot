@@ -10,10 +10,8 @@ export class DefaultEntity {
   async processTextToChat(ctx, content) {
     try {
       this.addSystemMessage(ctx);
-      const slicedContent = content.slice(0, 30);
 
-      ctx.session.messages.push({ role: openai.roles.USER, content: slicedContent });
-
+      ctx.session.messages.push({ role: openai.roles.USER, content });
       const response = await openai.chat(ctx.session.messages);
 
       ctx.session.messages.push({

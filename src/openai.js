@@ -12,9 +12,7 @@ class OpenAI {
   };
 
   constructor(apiKey) {
-    const configuration = new Configuration({
-      apiKey,
-    });
+    const configuration = new Configuration({ apiKey });
     this.openai = new OpenAIApi(configuration);
   }
 
